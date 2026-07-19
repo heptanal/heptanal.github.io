@@ -1,5 +1,4 @@
 +++
-title = "Hello, world!"
+title = "Portway — phone control for Linux"
+description = "Small, self-hosted software. Portway turns a phone browser into a remote mouse and keyboard for Linux."
 +++
-
-This website is built with [Zola](https://www.getzola.org/) and hosted on GitHub Pages.

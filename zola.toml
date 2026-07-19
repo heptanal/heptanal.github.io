@@ -1,7 +1,11 @@
 base_url = "https://stackpointer.xyz"
-title = "Heptanal"
-description = "My personal website"
+title = "heptanal"
+description = "Small, self-hosted software by heptanal."
+author = "heptanal"
 
 compile_sass = false
 build_search_index = false
 minify_html = true
+
+[extra]
+github_url = "https://github.com/heptanal"
