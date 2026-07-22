@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="light">
+    <meta name="color-scheme" content="light dark">
 
     {% set page_title = section.title | default(value=config.title) %}
     {% set page_description = section.description | default(value=config.description) %}
@@ -23,6 +23,21 @@
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="site-frame header-inner">
+        <a class="site-name" href="/">heptanal</a>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="/">Projects</a>
+          <a href="{{ config.extra.github_url }}">GitHub <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
+    </header>
     {% block body %}{% endblock body %}
+    <footer class="site-footer">
+      <div class="site-frame footer-inner">
+        <span>stackpointer.xyz</span>
+        <a href="{{ config.extra.site_source_url }}">site source <span aria-hidden="true">↗</span></a>
+      </div>
+    </footer>
   </body>
 </html>

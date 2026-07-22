@@ -1,18 +1,21 @@
-const copyButton = document.querySelector("[data-copy-target]");
-
-if (copyButton && navigator.clipboard) {
+document.querySelectorAll("[data-copy-target]").forEach((copyButton) => {
   copyButton.addEventListener("click", async () => {
     const target = document.getElementById(copyButton.dataset.copyTarget);
     if (!target) return;
 
+    if (!navigator.clipboard) {
+      copyButton.textContent = "select text";
+      return;
+    }
+
     try {
       await navigator.clipboard.writeText(target.textContent.trim());
-      copyButton.textContent = "Copied";
+      copyButton.textContent = "copied";
       window.setTimeout(() => {
-        copyButton.textContent = "Copy";
+        copyButton.textContent = "copy";
       }, 1600);
     } catch {
-      copyButton.textContent = "Select text";
+      copyButton.textContent = "select text";
     }
   });
-}
+});

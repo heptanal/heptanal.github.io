@@ -1,193 +1,38 @@
 {% extends "base.html" %}
 
-{% block title %}Portway — phone control for Linux{% endblock title %}
+{% block title %}Projects · heptanal{% endblock title %}
 
 {% block body %}
   {% set projects = load_data(path="data/projects.toml") %}
-  {% set project = projects.portway %}
-  <header class="site-header">
-    <div class="wrap header-inner">
-      <a class="site-brand" href="#top" aria-label="heptanal, back to top">
-        <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
-        <span>heptanal</span>
-      </a>
-      <nav class="site-nav" aria-label="Main navigation">
-        <a href="#how-it-works">How it works</a>
-        <a href="#install">Install</a>
-        <a href="#security">Security</a>
-        <a class="source-link" href="{{ project.github_url }}">Source <span aria-hidden="true">↗</span></a>
-      </nav>
+  {% set portway = projects.portway %}
+  {% set light_wizard = projects.light_wizard %}
+  <main class="site-frame home" id="main">
+    <h1>Projects</h1>
+
+    <div class="project-list">
+      <article class="project-card">
+        <header>
+          <h2><a href="/portway/">{{ portway.name }}</a></h2>
+          <span>{{ portway.platform }} · {{ portway.language }} · v{{ portway.version }}</span>
+        </header>
+        <p>{{ portway.summary }}</p>
+        <nav aria-label="Portway links">
+          <a href="/portway/">details</a>
+          <a href="{{ portway.repository_url }}">source <span aria-hidden="true">↗</span></a>
+        </nav>
+      </article>
+
+      <article class="project-card">
+        <header>
+          <h2><a href="/light-wizard/">{{ light_wizard.name }}</a></h2>
+          <span>{{ light_wizard.platform }} · {{ light_wizard.language }} · v{{ light_wizard.version }}</span>
+        </header>
+        <p>{{ light_wizard.summary }}</p>
+        <nav aria-label="Light Wizard links">
+          <a href="/light-wizard/">details</a>
+          <a href="{{ light_wizard.repository_url }}">source <span aria-hidden="true">↗</span></a>
+        </nav>
+      </article>
     </div>
-  </header>
-
-  <main id="main">
-    <section class="hero" id="top">
-      <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow"><span></span>{{ project.eyebrow }}</p>
-          <h1>{{ project.headline }}</h1>
-          <p class="lede">{{ project.lede }}</p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#install">Install Portway</a>
-            <a class="text-link" href="{{ project.github_url }}">Browse the repository <span aria-hidden="true">↗</span></a>
-          </div>
-          <dl class="project-facts" aria-label="Project details">
-            <div><dt>Runs on</dt><dd>Linux</dd></div>
-            <div><dt>Written in</dt><dd>Rust</dd></div>
-            <div><dt>License</dt><dd>MIT</dd></div>
-            <div><dt>Requires</dt><dd>A browser</dd></div>
-          </dl>
-        </div>
-
-        <div class="system-figure" role="img" aria-label="A phone sends browser input over the local network to Portway, which emits Linux input events through uinput">
-          <div class="figure-label">LOCAL CONTROL PATH / 01</div>
-
-          <div class="phone" aria-hidden="true">
-            <div class="phone-speaker"></div>
-            <div class="phone-bar">
-              <span class="portway-mini-mark"></span>
-              <b>PORTWAY</b>
-              <span class="online-dot"></span>
-            </div>
-            <div class="touch-surface">
-              <span class="finger-path"></span>
-              <span class="touch-copy">TOUCH TO MOVE<small>tap · scroll · drag</small></span>
-            </div>
-            <div class="phone-buttons"><i>L</i><i>M</i><i>R</i></div>
-          </div>
-
-          <div class="transmission" aria-hidden="true">
-            <span>LAN</span>
-            <i></i><i></i><i></i>
-          </div>
-
-          <div class="host" aria-hidden="true">
-            <div class="host-screen">
-              <div class="terminal-bar"><i></i><i></i><i></i><span>portway</span></div>
-              <div class="terminal-copy">
-                <p><span>$</span> portway serve</p>
-                <p class="terminal-muted">listening on :2721</p>
-                <p><i></i> controller paired</p>
-                <div class="input-route">
-                  <b>WS</b><span>→</span><b>uinput</b><span>→</span><b>Linux</b>
-                </div>
-              </div>
-            </div>
-            <div class="host-stand"></div>
-          </div>
-
-          <p class="figure-note"><b>No cloud hop.</b> Phone and host talk directly on your network.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="statement">
-      <div class="wrap statement-grid">
-        <p class="section-index">WHY / 02</p>
-        <h2>Remote control without another account, app, or vendor in the middle.</h2>
-        <p>Portway is a small server with a specific job. It serves its own controller, accepts authenticated input over WebSockets, and hands that input to Linux. Your phone needs only a modern browser.</p>
-      </div>
-    </section>
-
-    <section class="process" id="how-it-works">
-      <div class="wrap">
-        <div class="section-heading">
-          <div>
-            <p class="section-index">HOW IT WORKS / 03</p>
-            <h2>Three parts. One local connection.</h2>
-          </div>
-          <p>Portway defaults to port <code>2721</code> and serves everything the controller needs from the Linux host.</p>
-        </div>
-
-        <ol class="process-list">
-          <li>
-            <span class="step-number">01</span>
-            <div><h3>Run it on Linux</h3><p>The service starts an HTTP(S) and WebSocket server beside the uinput backend.</p></div>
-            <code>portway serve</code>
-          </li>
-          <li>
-            <span class="step-number">02</span>
-            <div><h3>Open it on your phone</h3><p>Visit the host’s local address. There is no app package to install or update.</p></div>
-            <code>192.168.1.42:2721</code>
-          </li>
-          <li>
-            <span class="step-number">03</span>
-            <div><h3>Pair and control</h3><p>Exchange a short-lived six-digit code for a browser session, then use the touchpad or keyboard.</p></div>
-            <code>portway pair</code>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <section class="features">
-      <div class="wrap features-grid">
-        <div class="features-intro">
-          <p class="section-index">CONTROLS / 04</p>
-          <h2>Made for the awkward moment when the keyboard is elsewhere.</h2>
-          <p>Reach for the phone already beside you: pause a video, move a window, enter a command, or navigate from across the room.</p>
-        </div>
-        <div class="feature-list">
-          {% for feature in project.features %}
-            <article class="feature-row">
-              <span>{{ feature.number }}</span>
-              <div><h3>{{ feature.title }}</h3><p>{{ feature.body }}</p></div>
-            </article>
-          {% endfor %}
-        </div>
-      </div>
-    </section>
-
-    <section class="install" id="install">
-      <div class="wrap install-grid">
-        <div class="install-copy">
-          <p class="section-index">INSTALL / 05</p>
-          <h2>Build it, then let the guided installer do the system work.</h2>
-          <p>Portway uses the latest stable Rust toolchain. On a conventional systemd distribution, the installer creates an unprivileged service, configures access to <code>/dev/uinput</code>, and starts it at boot.</p>
-          <p class="install-note">NixOS stays declarative; a flake package and NixOS module are included in the repository.</p>
-        </div>
-        <div class="code-window">
-          <div class="code-titlebar">
-            <span>shell / quick start</span>
-            <button class="copy-button" type="button" data-copy-target="install-code">Copy</button>
-          </div>
-          <pre id="install-code"><code>{{ project.install_command }}</code></pre>
-          <div class="code-footer"><span></span>Review the installer before running it.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="security" id="security">
-      <div class="wrap security-grid">
-        <div>
-          <p class="section-index">SECURITY / 06</p>
-          <h2>Local does not automatically mean private.</h2>
-        </div>
-        <div class="security-copy">
-          <p class="security-lede">Portway requires authentication by default, but plain HTTP does not encrypt pairing codes or input.</p>
-          <ul>
-            <li><span>01</span>Use it on a trusted network and restrict port 2721 with your firewall.</li>
-            <li><span>02</span>Configure native HTTPS when traffic needs protection in transit.</li>
-            <li><span>03</span>Run the service as an unprivileged user—not root.</li>
-          </ul>
-          <a class="text-link" href="{{ project.github_url }}/blob/main/docs/SECURITY.md">Read the security model <span aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-    </section>
-
-    <section class="closing">
-      <div class="wrap closing-inner">
-        <p>PORTWAY / OPEN SOURCE / MIT</p>
-        <h2>The short path from your thumb to Linux.</h2>
-        <a class="button button-light" href="{{ project.github_url }}">Get the source <span aria-hidden="true">↗</span></a>
-      </div>
-    </section>
   </main>
-
-  <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <a class="site-brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i></span><span>heptanal</span></a>
-      <p>Small software, kept close.</p>
-      <a href="{{ config.extra.github_url }}">GitHub <span aria-hidden="true">↗</span></a>
-    </div>
-  </footer>
 {% endblock body %}

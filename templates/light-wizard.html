@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Light Wizard · heptanal{% endblock title %}
+
+{% block body %}
+  {% set projects = load_data(path="data/projects.toml") %}
+  {% set project = projects.light_wizard %}
+  <main class="site-frame project-page" id="main">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">projects</a><span>/</span>light-wizard</nav>
+
+    <header class="project-header">
+      <h1>{{ project.name }}</h1>
+      <p>{{ project.summary }}</p>
+      <dl class="project-meta">
+        <div><dt>platform</dt><dd>{{ project.platform }}</dd></div>
+        <div><dt>language</dt><dd>{{ project.language }}</dd></div>
+        <div><dt>version</dt><dd>{{ project.version }}</dd></div>
+        <div><dt>lights</dt><dd>WiZ</dd></div>
+      </dl>
+      <a class="repository-link" href="{{ project.repository_url }}">source on GitHub <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <figure class="diagram">
+      <figcaption>Signal path</figcaption>
+      <div class="diagram-flow" role="img" aria-label="Mac system audio or a local audio file is analyzed for volume, pitch, and beats, then sent as color commands over local UDP to WiZ lights.">
+        <span>system audio / file</span><b aria-hidden="true">→</b><span>FFT + chroma + beats</span><b aria-hidden="true">→</b><span>color frames</span><b aria-hidden="true">→</b><span>local UDP</span><b aria-hidden="true">→</b><span>WiZ lights</span>
+      </div>
+    </figure>
+
+    <section>
+      <h2>What it does</h2>
+      <p>Light Wizard captures macOS system output through ScreenCaptureKit or decodes one local audio file. It measures volume, bass, mids, treble, spectral onsets, beats, and twelve pitch classes, then maps the result to brightness and color.</p>
+      <p>With several lights, the strongest notes in a chord are spread across the bulbs and can rotate on each beat. With one light, the chord is blended into one color. Updates are capped at 30 frames per second and small changes are dropped instead of being sent over the network.</p>
+      <ul>
+        <li>System-output capture without a loopback audio driver.</li>
+        <li>MP3, FLAC, WAV, Ogg Vorbis, Ogg Opus, and AAC in MP4 or M4A files.</li>
+        <li>Automatic WiZ discovery with explicit IP addresses as a fallback.</li>
+        <li>Pitch-based color by default, plus the older drifting-palette mode.</li>
+      </ul>
+    </section>
+
+    <section id="run">
+      <h2>Run</h2>
+      <p>Light Wizard needs macOS 13 or newer, a Rust toolchain, and WiZ lights on the same IPv4 network. Check discovery first; this does not request audio-recording permission.</p>
+      <div class="code-block">
+        <div><span>shell</span><button type="button" data-copy-target="light-wizard-run">copy</button></div>
+        <pre id="light-wizard-run"><code>{{ project.install_command }}</code></pre>
+      </div>
+      <p>To play and visualize a file instead of listening to system output:</p>
+      <pre class="single-command"><code>cargo run --release -- --audio-file song.flac</code></pre>
+    </section>
+
+    <section>
+      <h2>Configuration</h2>
+      <p>Run <code>cargo run -- --config-wizard</code> for the guided setup. It explains and validates every setting before writing <code>light-wizard.toml</code>. Command-line values can override the file for one run.</p>
+      <p><code>--dry-run</code> prints the live analysis without discovering or controlling lights. In file mode the audio still plays, which makes it useful for tuning sensitivity, pitch tracking, and playback delay.</p>
+      <p>The main controls are sensitivity, brightness range, attack and release time, palette, pitch smoothing, beat response, playback delay, and network frame rate.</p>
+    </section>
+
+    <section>
+      <h2>Limits</h2>
+      <ul>
+        <li>System-audio mode requires macOS 13+ and Screen &amp; System Audio Recording permission.</li>
+        <li>The Mac and WiZ lights need to share an IPv4 LAN. Discovery may be blocked by routers or VPNs; explicit light addresses can be used instead.</li>
+        <li>File mode handles one file at a time. There is no playlist, pause, seek, loop, or separate application volume.</li>
+        <li>Light commands are fire-and-forget UDP. Playback delay can be tuned, but visible bulb latency cannot be measured automatically.</li>
+        <li>Previous light state is restored on a best-effort basis after Ctrl+C or when file playback finishes.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>More</h2>
+      <ul class="link-list">
+        <li><a href="{{ project.repository_url }}">repository and README <span aria-hidden="true">↗</span></a></li>
+        <li><a href="{{ project.repository_url }}#configuration">configuration reference <span aria-hidden="true">↗</span></a></li>
+        <li><a href="{{ project.repository_url }}#file-playback-synchronization">file playback synchronization <span aria-hidden="true">↗</span></a></li>
+      </ul>
+    </section>
+  </main>
+{% endblock body %}

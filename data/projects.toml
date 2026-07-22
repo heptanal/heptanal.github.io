@@ -1,28 +1,20 @@
 [portway]
-title = "Portway"
-description = "A self-hosted, phone-first remote mouse and keyboard for Linux."
-eyebrow = "Project 01 · Initial release"
-headline = "A phone becomes your Linux mouse and keyboard."
-lede = "Portway serves a touch controller straight from your computer. Open it in a phone browser, pair once, and control the host without a native app or a cloud relay."
-github_url = "https://github.com/heptanal/portway"
+name = "Portway"
+slug = "portway"
+summary = "Use a phone as a mouse and keyboard for a Linux machine. Portway serves the controller over the local network and sends input through /dev/uinput."
+platform = "Linux"
+language = "Rust"
+version = "0.1.0"
+license = "MIT"
+repository_url = "https://github.com/heptanal/portway"
 install_command = "git clone https://github.com/heptanal/portway.git\ncd portway\ncargo build --release --locked\nscripts/install-linux"
 
-[[portway.features]]
-number = "01"
-title = "Touchpad gestures"
-body = "Move, tap, double-click, two-finger scroll, right-click, and click-and-drag from one large touch surface."
-
-[[portway.features]]
-number = "02"
-title = "A useful keyboard"
-body = "Send US-ASCII text, sticky modifiers, navigation keys, F1–F12, and common media controls."
-
-[[portway.features]]
-number = "03"
-title = "Kernel-level input"
-body = "Events go through Linux /dev/uinput, so the basic path is not tied directly to X11 or Wayland."
-
-[[portway.features]]
-number = "04"
-title = "Defensive release"
-body = "Disconnects, hidden pages, inactivity, and server shutdown all release held keys and mouse buttons."
+[light_wizard]
+name = "Light Wizard"
+slug = "light-wizard"
+summary = "Turn system audio or a local file into color on WiZ lights. Analysis and light control stay on the Mac and local network."
+platform = "macOS 13+"
+language = "Rust"
+version = "0.1.0"
+repository_url = "https://github.com/heptanal/light-wizard"
+install_command = "git clone https://github.com/heptanal/light-wizard.git\ncd light-wizard\ncargo run --release -- --discover-only\ncargo run --release"
