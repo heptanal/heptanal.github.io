@@ -47,12 +47,12 @@
         <pre id="light-wizard-run"><code>{{ project.install_command }}</code></pre>
       </div>
       <p>To play and visualize a file instead of listening to system output:</p>
-      <pre class="single-command"><code>cargo run --release -- --audio-file song.flac</code></pre>
+      <pre class="single-command"><code>light-wizard --audio-file song.flac</code></pre>
     </section>
 
     <section>
       <h2>Configuration</h2>
-      <p>Run <code>cargo run -- --config-wizard</code> for the guided setup. It explains and validates every setting before writing <code>light-wizard.toml</code>. Command-line values can override the file for one run.</p>
+      <p>Run <code>light-wizard --config-wizard</code> for the guided setup. It explains and validates every setting before writing <code>light-wizard.toml</code>. Command-line values can override the file for one run.</p>
       <p><code>--dry-run</code> prints the live analysis without discovering or controlling lights. In file mode the audio still plays, which makes it useful for tuning sensitivity, pitch tracking, and playback delay.</p>
       <p>The main controls are sensitivity, brightness range, attack and release time, palette, pitch smoothing, beat response, playback delay, and network frame rate.</p>
     </section>
